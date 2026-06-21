@@ -6,13 +6,16 @@ using UnityEngine;
 
 public class block : MonoBehaviour
 {
-    public GameObject blockPrefab;
+    [SerializeField] private GameObject blockPrefab;
+    // in other script there will be sprite changing, but for now just enter manually
     public Sprite sprite;
+    public PolygonCollider2D form;
     private SpriteRenderer spriteRenderer;
-    System.Random ran = new System.Random();
+    private SpriteMask mask;
+    public System.Random ran = new System.Random();
 
-    public PolygonCollider2D Square(bool a) {
-        PolygonCollider2D form = GetComponent<PolygonCollider2D>();
+    public PolygonCollider2D Rectangle(bool a) {
+        form = GetComponent<PolygonCollider2D>();
 
         float hight = ran.Next(1, 4) * 0.25f;
         float width = ran.Next(1, 4) * 0.25f;
@@ -31,15 +34,21 @@ public class block : MonoBehaviour
 
     public void Visual(bool a)
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer =  GetComponent<SpriteRenderer>();
+
         spriteRenderer.sprite = sprite;
         spriteRenderer.drawMode = SpriteDrawMode.Tiled;
+        spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+
+        
     }
 
     public GameObject Form()
     {
+        // if type == false, form = triagle else rectangle
         bool type = ((ran.Next(0, 2)) != 1);
-        Square(type);
+        
+        Rectangle(type);
         if (type)
         {
 

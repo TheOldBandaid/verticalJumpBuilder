@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class item : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject prefabGen;
+    public System.Random ran = new System.Random();
+
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector3 Spaw = new Vector3();
+        Spaw.x = ran.Next(-1, 1);
+        Spaw.y = ran.Next(2, 4);
     }
 }
