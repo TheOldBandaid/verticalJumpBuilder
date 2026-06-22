@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class item : MonoBehaviour
 {
-    public GameObject prefabGen;
     public System.Random ran = new System.Random();
-
 
     void Start()
     {
