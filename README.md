@@ -10,7 +10,7 @@ In the «Sprite editor» separate the borders by length and in «Draw Mode» sel
 
 ⋅⋅⋅ *I found this part a little more difficult to understand than I would have liked, so I'll write down the solution I came up with right away. This is convenient because the size of the borders does not change when the block size is changed, and the triangles are immediately created without borders*
 
-The answer fot next problem with visuability is shader.
+Using mesh technology made it possible to cut the sprite to fit the collider's dimensions.
 
 ### Form
 There are two types here - triangles and rectangles. Both work according to the Polygon Collider 2D principle, but the triangle's random point is reset to zero.

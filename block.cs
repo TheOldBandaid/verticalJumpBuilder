@@ -6,13 +6,16 @@ using UnityEngine;
 using Unity.VisualScripting;
 using UnityEngine.U2D;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class block : MonoBehaviour
 {
     private GameObject blockPrefab;
+    private Material spriteMaterial;
     public Sprite sprite;
     private PolygonCollider2D form;
-    private SpriteRenderer spriteRenderer;
+    private MeshFilter meshFilter;
+    private MeshRenderer meshRenderer;
     
     public System.Random ran = new System.Random();
     public int corner = -1;
@@ -32,32 +35,53 @@ public class block : MonoBehaviour
 
         if (!a)
         {
-            corner = ran.Next(1, 4);
+            corner = ran.Next(0, 4);
             points[corner] = new Vector2(0, 0);
         }
         form.SetPath(0, points);
         return form;
     }
 
-    public void Visual(GameObject obj)
+    public void Visual(GameObject obj, Sprite sprite)
     {
-        spriteRenderer = obj.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = sprite;
-        spriteRenderer.drawMode = SpriteDrawMode.Tiled;
-        spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-   
+        meshFilter = obj.AddComponent<MeshFilter>();
+        meshRenderer = obj.AddComponent<MeshRenderer>();
 
+        Material spriteMat = new Material(Shader.Find("Sprites/Default"));
+        spriteMat.mainTexture = sprite.texture;
+        meshRenderer.material = spriteMat;
 
+        Mesh mesh = form.CreateMesh(false, false);
+        Vector3[] verticles = mesh.vertices;
+        Vector2[] dots = new Vector2[verticles.Length];
+        Vector2 spriteSize = sprite.bounds.size;
+        Vector2 pointStart = new(0, 0);
+        Bounds bounds = form.bounds;
 
-        if (corner != -1)
+        if (corner == -1) { corner = ran.Next(0, 4); }
+        switch (corner)
         {
-            corner = corner switch { 0 => 2, 1 => 3, 2 => 0, 3 => 1, _ => -1};
-        }
-        else
-        {
-            corner = ran.Next(1, 4);
+            case 0: 
+                pointStart = new(bounds.max.x, bounds.min.y); break;
+            case 1:
+                pointStart = new(bounds.min.x, bounds.min.y); break;
+            case 2:
+                pointStart = new(bounds.min.x, bounds.max.y); break;
+            case 3:
+                pointStart = new(bounds.max.x, bounds.max.y); break;
+            default:
+                break;
         }
 
+
+        for (int i = 0; i < verticles.Length; i++)
+        {
+            float x = (verticles[i].x - pointStart.x) / spriteSize.x;
+            float y = (verticles[i].y - pointStart.y) / spriteSize.y;
+            dots[i] = new Vector2(x, y);
+        }
+        mesh.uv = dots;
+        meshFilter.mesh = mesh;
     }
 
     private void Start()
@@ -67,6 +91,6 @@ public class block : MonoBehaviour
         bool type = ((ran.Next(0, 2)) != 1);
 
         Rectangle(blockPrefab, type);
-        Visual(blockPrefab);
+        Visual(blockPrefab, sprite);
     }
 }
