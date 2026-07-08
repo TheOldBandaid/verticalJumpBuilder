@@ -54,7 +54,7 @@ public class block : MonoBehaviour
         Mesh mesh = form.CreateMesh(false, false);
         Vector3[] verticles = mesh.vertices;
         Vector2[] dots = new Vector2[verticles.Length];
-        Vector2 spriteSize = sprite.bounds.size;
+        Vector2 spriteSize = form.bounds.size;
         Vector2 pointStart = new(0, 0);
         Bounds bounds = form.bounds;
 
@@ -64,11 +64,11 @@ public class block : MonoBehaviour
             case 0: 
                 pointStart = new(bounds.max.x, bounds.min.y); break;
             case 1:
-                pointStart = new(bounds.min.x, bounds.min.y); break;
+                pointStart = new(bounds.max.x, bounds.max.y); break;
             case 2:
                 pointStart = new(bounds.min.x, bounds.max.y); break;
             case 3:
-                pointStart = new(bounds.max.x, bounds.max.y); break;
+                pointStart = new(bounds.min.x, bounds.min.y); break;
             default:
                 break;
         }
@@ -76,8 +76,8 @@ public class block : MonoBehaviour
 
         for (int i = 0; i < verticles.Length; i++)
         {
-            float x = (verticles[i].x - pointStart.x) / spriteSize.x;
-            float y = (verticles[i].y - pointStart.y) / spriteSize.y;
+            float x = (verticles[i].x / spriteSize.x );
+            float y = (verticles[i].y / spriteSize.y );
             dots[i] = new Vector2(x, y);
         }
         mesh.uv = dots;
@@ -86,11 +86,20 @@ public class block : MonoBehaviour
 
     private void Start()
     {
-        blockPrefab = new GameObject();
-        // if type == false, form = triagle else rectangle
-        bool type = ((ran.Next(0, 2)) != 1);
+        for (int i = 0; i<10; i++)
+        {
+            float x = 0;
+            float y = 0;
+            Vector2 poz = new Vector2(x+i, y+i);
+            blockPrefab = new GameObject();
+            blockPrefab.transform.parent = transform;
+            transform.position = poz;
 
-        Rectangle(blockPrefab, type);
-        Visual(blockPrefab, sprite);
+            bool type = ((ran.Next(0, 2)) != 1);
+
+            Rectangle(blockPrefab, type);
+            Visual(blockPrefab, sprite);
+        }
+        
     }
 }
