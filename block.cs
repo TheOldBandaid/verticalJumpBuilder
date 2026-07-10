@@ -27,16 +27,17 @@ public class block : MonoBehaviour
         float width = ran.Next(1, 4) * 0.25f;
 
         Vector2[] points = new Vector2[4];
-        points[0] = new Vector2(hight, width);
-        points[1] = new Vector2(-hight, width);
-        points[2] = new Vector2(-hight, -width);
-        points[3] = new Vector2(hight, -width);
+        for (int i = 0; i<4; i++)
+        {
+            int powX = i/2 == 0 ? 1 : -1;
+            int powY = i %2 ==0 ? 1 : -1;
+            points[i] = new Vector2(width * powX, hight * powY);
+        }
         
 
         if (!a)
         {
-            corner = ran.Next(0, 4);
-            points[corner] = new Vector2(0, 0);
+            points[2] = new Vector2(0, 0);
         }
         form.SetPath(0, points);
         return form;
@@ -76,8 +77,8 @@ public class block : MonoBehaviour
 
         for (int i = 0; i < verticles.Length; i++)
         {
-            float x = (verticles[i].x / spriteSize.x );
-            float y = (verticles[i].y / spriteSize.y );
+            float x = (verticles[i].x - bounds.min.x) / spriteSize.x;
+            float y = (verticles[i].y - bounds.min.y) / spriteSize.y;
             dots[i] = new Vector2(x, y);
         }
         mesh.uv = dots;
