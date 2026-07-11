@@ -14,75 +14,38 @@ public class block : MonoBehaviour
     private Material spriteMaterial;
     public Sprite sprite;
     private PolygonCollider2D form;
-    private MeshFilter meshFilter;
-    private MeshRenderer meshRenderer;
+
     
     public System.Random ran = new System.Random();
     public int corner = -1;
 
     public PolygonCollider2D Rectangle(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
-
         float hight = ran.Next(1, 4) * 0.25f;
         float width = ran.Next(1, 4) * 0.25f;
 
-        Vector2[] points = new Vector2[4];
-        for (int i = 0; i<4; i++)
-        {
-            int powX = i/2 == 0 ? 1 : -1;
-            int powY = i %2 ==0 ? 1 : -1;
-            points[i] = new Vector2(width * powX, hight * powY);
-        }
-        
+        Vector2[] points = new Vector2[] {
+            new Vector2(width, -hight),
+            !a ? Vector2.zero : new Vector2(width, hight),
+            new Vector2(-width, hight),
+            new Vector2(-width, -hight)
+        };
 
-        if (!a)
-        {
-            points[2] = new Vector2(0, 0);
-        }
-        form.SetPath(0, points);
+        form.points = points;
         return form;
     }
 
     public void Visual(GameObject obj, Sprite sprite)
     {
-        meshFilter = obj.AddComponent<MeshFilter>();
-        meshRenderer = obj.AddComponent<MeshRenderer>();
+        //SpriteRenderer spriteRenderer = obj.AddComponent<SpriteRenderer>();
+        //spriteRenderer.sprite = sprite;
 
-        Material spriteMat = new Material(Shader.Find("Sprites/Default"));
-        spriteMat.mainTexture = sprite.texture;
-        meshRenderer.material = spriteMat;
+        //spriteRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
 
-        Mesh mesh = form.CreateMesh(false, false);
-        Vector3[] verticles = mesh.vertices;
-        Vector2[] dots = new Vector2[verticles.Length];
-        Vector2 spriteSize = form.bounds.size;
-        Vector2 pointStart = new(0, 0);
-        Bounds bounds = form.bounds;
+        //Vector2[] spritePoints = form.points;
+        //Vector2[] index = form.GetPath(0);
 
-        if (corner == -1) { corner = ran.Next(0, 4); }
-        switch (corner)
-        {
-            case 0: 
-                pointStart = new(bounds.max.x, bounds.min.y); break;
-            case 1:
-                pointStart = new(bounds.max.x, bounds.max.y); break;
-            case 2:
-                pointStart = new(bounds.min.x, bounds.max.y); break;
-            case 3:
-                pointStart = new(bounds.min.x, bounds.min.y); break;
-            default:
-                break;
-        }
-
-
-        for (int i = 0; i < verticles.Length; i++)
-        {
-            float x = (verticles[i].x - bounds.min.x) / spriteSize.x;
-            float y = (verticles[i].y - bounds.min.y) / spriteSize.y;
-            dots[i] = new Vector2(x, y);
-        }
-        mesh.uv = dots;
-        meshFilter.mesh = mesh;
+        //sprite.OverrideGeometry(spritePoints, index);
     }
 
     private void Start()
