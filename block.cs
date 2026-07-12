@@ -39,12 +39,9 @@ public class block : MonoBehaviour
     {
         //SpriteRenderer spriteRenderer = obj.AddComponent<SpriteRenderer>();
         //spriteRenderer.sprite = sprite;
-
         //spriteRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
-
         //Vector2[] spritePoints = form.points;
         //Vector2[] index = form.GetPath(0);
-
         //sprite.OverrideGeometry(spritePoints, index);
     }
 
