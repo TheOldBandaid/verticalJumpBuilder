@@ -11,13 +11,9 @@ using UnityEngine.UI;
 public class block : MonoBehaviour
 {
     private GameObject blockPrefab;
-    private Material spriteMaterial;
     public Sprite sprite;
     private PolygonCollider2D form;
-
-    
     public System.Random ran = new System.Random();
-    public int corner = -1;
 
     public PolygonCollider2D Rectangle(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
@@ -35,23 +31,48 @@ public class block : MonoBehaviour
         return form;
     }
 
+    public PolygonCollider2D Boards(GameObject obj)
+    {
+        PolygonCollider2D borderForm = obj.AddComponent<PolygonCollider2D>();
+        int amount = ran.Next(1, form.points.Length);
+        for (int i = 0; i < amount; i++) { 
+
+        }
+
+        borderForm.points = form.points;
+        return borderForm;
+
+    }
+
     public void Visual(GameObject obj, Sprite sprite)
     {
-        //SpriteRenderer spriteRenderer = obj.AddComponent<SpriteRenderer>();
-        //spriteRenderer.sprite = sprite;
-        //spriteRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
-        //Vector2[] spritePoints = form.points;
-        //Vector2[] index = form.GetPath(0);
-        //sprite.OverrideGeometry(spritePoints, index);
+        MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
+        MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+        Mesh mesh = form.CreateMesh(true, true);
+
+        Material material = meshRenderer.material;
+        material.mainTexture = sprite.texture;
+        meshRenderer.material = material;
+
+        Vector3[] vertices = mesh.vertices;
+        Vector2[] dots = new Vector2[vertices.Length];
+        for (int i = 0; i<vertices.Length; i++)
+        {
+            float x = vertices[i].x;
+            float y = vertices[i].y;
+            dots[i]= new Vector2(x, y);
+        }
+
+        mesh.uv = dots;
+        meshFilter.mesh = mesh;
     }
+
 
     private void Start()
     {
         for (int i = 0; i<10; i++)
         {
-            float x = 0;
-            float y = 0;
-            Vector2 poz = new Vector2(x+i, y+i);
+            Vector2 poz = new Vector2(i-2, i-2);
             blockPrefab = new GameObject();
             blockPrefab.transform.parent = transform;
             transform.position = poz;
