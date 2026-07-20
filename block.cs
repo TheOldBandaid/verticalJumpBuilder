@@ -35,11 +35,10 @@ public class block : MonoBehaviour
     {
         PolygonCollider2D borderForm = obj.AddComponent<PolygonCollider2D>();
         int amount = ran.Next(1, form.points.Length);
-        for (int i = 0; i < amount; i++) { 
+        Vector2[] points = new Vector2[] {
+        };
 
-        }
-
-        borderForm.points = form.points;
+        borderForm.points = points;
         return borderForm;
 
     }
