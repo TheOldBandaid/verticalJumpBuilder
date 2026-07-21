@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class block : MonoBehaviour
 {
     private GameObject blockPrefab;
-    public Sprite sprite;
+    public Sprite sprite1, sprite2;
     private PolygonCollider2D form;
     public System.Random ran = new System.Random();
 
@@ -22,9 +22,9 @@ public class block : MonoBehaviour
 
         Vector2[] points = new Vector2[] {
             new Vector2(width, -hight),
-            !a ? Vector2.zero : new Vector2(width, hight),
+            new Vector2(-width, -hight),
             new Vector2(-width, hight),
-            new Vector2(-width, -hight)
+            !a ? Vector2.zero : new Vector2(width, hight),
         };
 
         form.points = points;
@@ -34,23 +34,33 @@ public class block : MonoBehaviour
     public PolygonCollider2D Boards(GameObject obj)
     {
         PolygonCollider2D borderForm = obj.AddComponent<PolygonCollider2D>();
-        int amount = ran.Next(1, form.points.Length);
-        Vector2[] points = new Vector2[] {
-        };
+        int amount = ran.Next(2, form.points.Length);
+        Vector2[] points = new Vector2[amount*2];
+        for (int i = 0; i<amount/2+1; ++i)
+        {
+            points[i] = form.points[i];
+        }
+        float x = form.points[0].x + 0.5f;
+        float y = form.points[3].y + 0.5f;
 
+        for (int i = amount-1; i > amount/2; i--) {
+            int modX = (i - amount +1)==1 || (i - amount + 1) == 2? -1 :1;
+            int modY = (i-amount+1)/2 == 0 ? -1 : 1;
+            points[i] = new Vector2(x*modX, y*modY);
+        }
         borderForm.points = points;
         return borderForm;
 
     }
 
-    public void Visual(GameObject obj, Sprite sprite)
+    public void Visual(GameObject obj, Sprite sprite1, Sprite sprite2)
     {
         MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
         Mesh mesh = form.CreateMesh(true, true);
 
         Material material = meshRenderer.material;
-        material.mainTexture = sprite.texture;
+        material.mainTexture = sprite1.texture;
         meshRenderer.material = material;
 
         Vector3[] vertices = mesh.vertices;
@@ -69,18 +79,11 @@ public class block : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i<10; i++)
-        {
-            Vector2 poz = new Vector2(i-2, i-2);
-            blockPrefab = new GameObject();
-            blockPrefab.transform.parent = transform;
-            transform.position = poz;
 
-            bool type = ((ran.Next(0, 2)) != 1);
-
-            Rectangle(blockPrefab, type);
-            Visual(blockPrefab, sprite);
-        }
-        
+        blockPrefab = new GameObject();
+        bool type = ((ran.Next(0, 2)) != 1);
+        Rectangle(blockPrefab, type);
+        Boards(blockPrefab);
+        Visual(blockPrefab, sprite1, sprite2);
     }
 }
