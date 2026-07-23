@@ -50,7 +50,6 @@ public class block : MonoBehaviour
 
         borderForm.points = points;
         return borderForm;
-
     }
 
     public void Visual(GameObject obj, Sprite sprite, PolygonCollider2D collider)
@@ -62,15 +61,25 @@ public class block : MonoBehaviour
         meshFilter.mesh = mesh;
     }
 
+    public void Inner(GameObject obj)
+    {
+        bool type = ((ran.Next(0, 2)) != 1);
+        InnerForm(blockPrefab, type);
+        Visual(blockPrefab, sprite1, form);
+    }
+
+    public void Borders(GameObject obj)
+    {
+        BoardsForm(blockPrefab);
+        Visual(blockPrefab, sprite2, borderForm);
+    }
+
 
     private void Start()
     {
 
         blockPrefab = new GameObject();
-        bool type = ((ran.Next(0, 2)) != 1);
-        InnerForm(blockPrefab, type);
-        BoardsForm(blockPrefab);
-        Visual(blockPrefab, sprite1, form);
-        Visual(blockPrefab, sprite2, borderForm);
+        Inner(blockPrefab);
+        Borders(blockPrefab);
     }
 }
