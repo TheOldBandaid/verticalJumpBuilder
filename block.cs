@@ -12,6 +12,7 @@ public class block : MonoBehaviour
 {
     private GameObject blockPrefab;
     public Sprite sprite1, sprite2;
+    public Material material1, material2;
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
     public System.Random ran = new System.Random();
@@ -34,7 +35,7 @@ public class block : MonoBehaviour
     public PolygonCollider2D BoardsForm(GameObject obj)
     {
         borderForm = obj.AddComponent<PolygonCollider2D>();
-        int amount = ran.Next(2, form.points.Length)*2;
+        int amount = ran.Next(2, form.points.Length+1)*2;
         Vector2[] points = new Vector2[amount];
 
         float x = form.points[0].x + 0.2f;
@@ -52,12 +53,20 @@ public class block : MonoBehaviour
         return borderForm;
     }
 
-    public void Visual(GameObject obj, Sprite sprite, PolygonCollider2D collider)
+    public void Visual(GameObject obj, Sprite sprite, Sprite sprite2)
     {
         MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
-        Mesh mesh = collider.CreateMesh(false, false);
-        meshRenderer.material.mainTexture = sprite.texture;
+        Mesh mesh1 = form.CreateMesh(false, false);
+        Mesh mesh2 = borderForm.CreateMesh(false, false);
+        Mesh mesh = new Mesh();
+
+        CombineInstance[] combo = new CombineInstance[2];
+        combo[0].mesh = mesh1;
+        combo[1].mesh = mesh2;
+        mesh.CombineMeshes(combo, false, false);
+
+        meshRenderer.materials = new Material[] { material1, material2 };
         meshFilter.mesh = mesh;
     }
 
@@ -65,13 +74,11 @@ public class block : MonoBehaviour
     {
         bool type = ((ran.Next(0, 2)) != 1);
         InnerForm(blockPrefab, type);
-        Visual(blockPrefab, sprite1, form);
     }
 
     public void Borders(GameObject obj)
     {
         BoardsForm(blockPrefab);
-        Visual(blockPrefab, sprite2, borderForm);
     }
 
 
@@ -81,5 +88,6 @@ public class block : MonoBehaviour
         blockPrefab = new GameObject();
         Inner(blockPrefab);
         Borders(blockPrefab);
+        Visual(blockPrefab, sprite1, sprite2);
     }
 }
