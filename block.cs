@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class block : MonoBehaviour
 {
     private GameObject blockPrefab;
-    public Sprite sprite1, sprite2;
     public Material material1, material2;
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
@@ -53,7 +52,7 @@ public class block : MonoBehaviour
         return borderForm;
     }
 
-    public void Visual(GameObject obj, Sprite sprite, Sprite sprite2)
+    public void Visual(GameObject obj)
     {
         MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
@@ -74,11 +73,13 @@ public class block : MonoBehaviour
     {
         bool type = ((ran.Next(0, 2)) != 1);
         InnerForm(blockPrefab, type);
+        // bouncing
     }
 
     public void Borders(GameObject obj)
     {
         BoardsForm(blockPrefab);
+        // sticky
     }
 
 
@@ -88,6 +89,6 @@ public class block : MonoBehaviour
         blockPrefab = new GameObject();
         Inner(blockPrefab);
         Borders(blockPrefab);
-        Visual(blockPrefab, sprite1, sprite2);
+        Visual(blockPrefab);
     }
 }
