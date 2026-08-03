@@ -14,6 +14,7 @@ public class block : MonoBehaviour
     public Material material1, material2;
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
+    private Collision2D collision;
     public System.Random ran = new System.Random();
 
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
@@ -31,10 +32,9 @@ public class block : MonoBehaviour
         return form;
     }
 
-    public PolygonCollider2D BoardsForm(GameObject obj)
+    public PolygonCollider2D BoardsForm(GameObject obj, int amount)
     {
         borderForm = obj.AddComponent<PolygonCollider2D>();
-        int amount = ran.Next(2, form.points.Length+1)*2;
         Vector2[] points = new Vector2[amount];
 
         float x = form.points[0].x + 0.2f;
@@ -72,14 +72,13 @@ public class block : MonoBehaviour
     public void Inner(GameObject obj)
     {
         bool type = ((ran.Next(0, 2)) != 1);
-        InnerForm(blockPrefab, type);
-        // bouncing
+        InnerForm(obj, type);
     }
 
     public void Borders(GameObject obj)
     {
-        BoardsForm(blockPrefab);
-        // sticky
+        int amount = ran.Next(2, form.points.Length + 1) * 2;
+        BoardsForm(obj, amount);
     }
 
 
