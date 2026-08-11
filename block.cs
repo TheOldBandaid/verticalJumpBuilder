@@ -14,8 +14,8 @@ public class block : MonoBehaviour
     public Material material1, material2;
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
-    private Collision2D collision;
     public System.Random ran = new System.Random();
+    public stage script1;
 
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
@@ -85,10 +85,13 @@ public class block : MonoBehaviour
 
     private void Start()
     {
-
-        blockPrefab = new GameObject("block");
-        Inner(blockPrefab);
-        Borders(blockPrefab);
-        Visual(blockPrefab);
+        for (int i = 0; i < script1.kol; i++)
+        {
+            blockPrefab = new GameObject("block");
+            Inner(blockPrefab);
+            Borders(blockPrefab);
+            Visual(blockPrefab);
+            blockPrefab.transform.position = new Vector3(i, i, 0);
+        }
     }
 }

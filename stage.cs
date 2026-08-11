@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class item : MonoBehaviour
+public abstract class stage : MonoBehaviour
 {
+    private level script;
+    public int kol;
+    public int x, y = 0;
+    public System.Random ran = new System.Random();
     void Start()
     {
-        for (int i = 0 ; i < 10; i++)
-        {
-            GameObject obj = GetComponent<block>().gameObject;
-            obj.transform.position = new Vector2(i, i);
-        }
+        kol = ran.Next(1, 5);
     }
 }
