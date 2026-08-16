@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class stage : MonoBehaviour
+public class stage : MonoBehaviour
 {
-    private level script;
+    public block script;
     public int kol;
-    public int x, y = 0;
     public System.Random ran = new System.Random();
     void Start()
     {
-        kol = ran.Next(1, 5);
+        kol = ran.Next(3, 10);
+        for (int i = 0; i < kol; i++)
+        {
+            Vector3 position = new Vector3(i, i, 0);
+            GameObject obj =  script.CreateObj(position);
+        }
     }
 }

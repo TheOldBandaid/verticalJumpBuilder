@@ -10,17 +10,15 @@ using UnityEngine.UI;
 
 public class block : MonoBehaviour
 {
-    public static GameObject blockPrefab;
     public Material material1, material2;
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
     public System.Random ran = new System.Random();
-    public stage script1;
 
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
-        float hight = ran.Next(1, 4) * 0.5f;
-        float width = ran.Next(1, 4) * 0.5f;
+        float hight = ran.Next(1, 4) * 0.25f;
+        float width = ran.Next(1, 4) * 0.25f;
         Vector2[] points = new Vector2[a ? 4 : 3];
 
         points[0] = new Vector2(width, -hight);
@@ -83,15 +81,13 @@ public class block : MonoBehaviour
     }
 
 
-    private void Start()
+    public GameObject CreateObj(Vector2 position)
     {
-        for (int i = 0; i < script1.kol; i++)
-        {
-            blockPrefab = new GameObject("block");
-            Inner(blockPrefab);
-            Borders(blockPrefab);
-            Visual(blockPrefab);
-            blockPrefab.transform.position = new Vector3(i, i, 0);
-        }
+        GameObject obj = new GameObject("block");
+        Inner(obj);
+        Borders(obj);
+        Visual(obj);
+        obj.transform.position = position;
+        return obj;
     }
 }
