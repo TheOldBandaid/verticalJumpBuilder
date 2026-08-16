@@ -81,13 +81,12 @@ public class block : MonoBehaviour
     }
 
 
-    public GameObject CreateObj(Vector2 position)
+    public GameObject CreateObj()
     {
         GameObject obj = new GameObject("block");
         Inner(obj);
         Borders(obj);
         Visual(obj);
-        obj.transform.position = position;
         return obj;
     }
 }
