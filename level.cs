@@ -9,6 +9,6 @@ public class level : MonoBehaviour
     public stage stageInfo;
     void Start()
     {
-        position = stageInfo.lastPoz == null ? new Vector2(1.5f, -2.5f) : stageInfo.lastPoz;
+        position = stageInfo.lastPoz == Vector2.zero ? new Vector2(-1.5f, -2.5f) : stageInfo.lastPoz;
     }
 }
