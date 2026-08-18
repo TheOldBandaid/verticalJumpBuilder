@@ -17,8 +17,8 @@ public class block : MonoBehaviour
 
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
-        float hight = ran.Next(1, 4) * 0.25f;
-        float width = ran.Next(1, 4) * 0.25f;
+        float hight = ran.Next(1, 4) * 0.15f;
+        float width = ran.Next(1, 4) * 0.15f;
         Vector2[] points = new Vector2[a ? 4 : 3];
 
         points[0] = new Vector2(width, -hight);
@@ -35,8 +35,8 @@ public class block : MonoBehaviour
         borderForm = obj.AddComponent<PolygonCollider2D>();
         Vector2[] points = new Vector2[amount];
 
-        float x = form.points[0].x + 0.2f;
-        float y = form.points[2].y + 0.2f;
+        float x = form.points[0].x + 0.15f;
+        float y = form.points[2].y + 0.15f;
 
         for (int i = 0; i<amount/2; ++i)
         {

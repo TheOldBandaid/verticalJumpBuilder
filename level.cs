@@ -5,10 +5,10 @@ using UnityEngine.UIElements;
 
 public class level : MonoBehaviour
 {
-    public Vector2 position;
     public stage stageInfo;
-    void Start()
+    public Vector2 Position()
     {
-        position = stageInfo.lastPoz == Vector2.zero ? new Vector2(-1.5f, -2.5f) : stageInfo.lastPoz;
+        Vector2 position = stageInfo.lastPoz == Vector2.zero ? new Vector2(-1.5f, -2.5f) : stageInfo.lastPoz;
+        return position;
     }
 }

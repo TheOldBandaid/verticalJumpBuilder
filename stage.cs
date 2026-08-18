@@ -10,12 +10,13 @@ public class stage : MonoBehaviour
     public Camera cam;
     public block blockCreate;
     public level levelRules;
+    private int kol;
     private System.Random ran = new System.Random();
-    protected List<GameObject> list = new List<GameObject>();
+    public List<GameObject> list = new List<GameObject>();
     
     void Start()
     {
-        int kol = ran.Next(3, 10);
+        kol = ran.Next(7, 15);
         for (int i = 0; i < kol; i++)
         {
             GameObject obj =  blockCreate.CreateObj();
@@ -26,19 +27,25 @@ public class stage : MonoBehaviour
 
     public void Place(List<GameObject> objList)
     {
-        Vector3 rotation = Vector3.zero;
-        Vector2 curPozition = levelRules.position;
-        int x = Convert.ToInt32(cam.orthographicSize);
+        Vector2 curPozition = levelRules.Position();
+        int cameraHight = Convert.ToInt32(cam.orthographicSize);
+
+        float bottomY = curPozition.y;
+        float stepY = (2f * cameraHight - Math.Abs(bottomY)) / kol;
+        
         bool sideRight = true;
+
         foreach (GameObject obj in objList) {
             obj.transform.position = curPozition;
-            obj.transform.eulerAngles = rotation;
-            curPozition.x = sideRight ? ran.Next(1, x)*0.5f : ran.Next(-x, 1) * 0.5f;
-            curPozition.y += ran.Next(1, x)*0.5f;
-            rotation.z += 90*ran.Next(0, 4);
+            obj.transform.eulerAngles =  new Vector3(0, 0, 90*ran.Next(1, 4));
+            curPozition.x = sideRight ? 
+                ran.Next(1, cameraHight) * cam.aspect :
+                ran.Next(-cameraHight+1, 0)* cam.aspect;
+            curPozition.y += stepY;
             sideRight = !sideRight;
         }
-        curPozition.x += 3;
+
+        curPozition.x += sideRight? 3 : -3;
         lastPoz = curPozition;
     }
 }
