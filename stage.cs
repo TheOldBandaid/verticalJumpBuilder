@@ -10,28 +10,44 @@ public class stage : MonoBehaviour
     public Camera cam;
     public block blockCreate;
     public level levelRules;
-    private int kol;
+    private int kol = 1;
     private System.Random ran = new System.Random();
     public List<GameObject> list = new List<GameObject>();
-    
-    void Start()
-    {
+
+
+    public void FillList() {
         kol = ran.Next(7, 15);
         for (int i = 0; i < kol; i++)
         {
-            GameObject obj =  blockCreate.CreateObj();
+            GameObject obj = blockCreate.CreateObj();
             list.Add(obj);
         }
-        Place(list);
     }
+    
+    public void MakeStage()
+    {
+        int maxAmount = 40;
+        int start = kol - 1;
+        if (list.Count < maxAmount)
+        {
+            FillList();
+            Place(list.GetRange(start, kol-1));
+        }
+        else {
+            start = ran.Next(15, list.Count);
+            kol = ran.Next(7, 15);
+            Place(list.GetRange(start-kol, start-1));
+        }
+    }
+
+
 
     public void Place(List<GameObject> objList)
     {
         Vector2 curPozition = levelRules.Position();
         int cameraHight = Convert.ToInt32(cam.orthographicSize);
-
-        float bottomY = curPozition.y;
-        float stepY = (2f * cameraHight - Math.Abs(bottomY)) / kol;
+        float stepY = (2f * cameraHight) / objList.Count;
+        int rotation = 0;
         
         bool sideRight = true;
 
@@ -46,6 +62,7 @@ public class stage : MonoBehaviour
         }
 
         curPozition.x += sideRight? 3 : -3;
+        curPozition.y += stepY;
         lastPoz = curPozition;
     }
 }
