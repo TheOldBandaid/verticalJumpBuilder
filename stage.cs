@@ -27,16 +27,16 @@ public class stage : MonoBehaviour
     public void MakeStage()
     {
         int maxAmount = 40;
-        int start = kol - 1;
+        int start = list.Count;
         if (list.Count < maxAmount)
         {
             FillList();
-            Place(list.GetRange(start, kol-1));
+            Place(list.GetRange(start, kol));
         }
         else {
             start = ran.Next(15, list.Count);
             kol = ran.Next(7, 15);
-            Place(list.GetRange(start-kol, start-1));
+            Place(list.GetRange(start-kol, kol));
         }
     }
 
@@ -47,7 +47,6 @@ public class stage : MonoBehaviour
         Vector2 curPozition = levelRules.Position();
         int cameraHight = Convert.ToInt32(cam.orthographicSize);
         float stepY = (2f * cameraHight) / objList.Count;
-        int rotation = 0;
         
         bool sideRight = true;
 
@@ -57,12 +56,12 @@ public class stage : MonoBehaviour
             curPozition.x = sideRight ? 
                 ran.Next(1, cameraHight) * cam.aspect :
                 ran.Next(-cameraHight+1, 0)* cam.aspect;
+            if (sideRight) { obj.transform.Rotate(0, 180, 0); }
             curPozition.y += stepY;
             sideRight = !sideRight;
         }
 
         curPozition.x += sideRight? 3 : -3;
-        curPozition.y += stepY;
         lastPoz = curPozition;
     }
 }
