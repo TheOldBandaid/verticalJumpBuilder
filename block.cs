@@ -55,17 +55,34 @@ public class block : MonoBehaviour
     {
         MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+
         Mesh mesh1 = form.CreateMesh(false, false);
         Mesh mesh2 = borderForm.CreateMesh(false, false);
+        uvGen(mesh1);
+        uvGen(mesh2);
+
         Mesh mesh = new Mesh();
 
         CombineInstance[] combo = new CombineInstance[2];
         combo[0].mesh = mesh1;
         combo[1].mesh = mesh2;
         mesh.CombineMeshes(combo, false, false);
-
+        
         meshRenderer.materials = new Material[] { material1, material2 };
         meshFilter.mesh = mesh;
+    }
+
+    private void uvGen(Mesh mesh)
+    {
+        Vector3[] vertices = mesh.vertices;
+        Vector2[] uvs = new Vector2[vertices.Length];
+
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            uvs[i] = new Vector2(vertices[i].x, vertices[i].y);
+        }
+
+        mesh.uv = uvs;
     }
 
     public void Inner(GameObject obj)
