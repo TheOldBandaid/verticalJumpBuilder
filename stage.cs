@@ -16,7 +16,7 @@ public class stage : MonoBehaviour
 
 
     public void FillList() {
-        kol = ran.Next(7, 15);
+        kol = ran.Next(6, 13);
         for (int i = 0; i < kol; i++)
         {
             GameObject obj = blockCreate.CreateObj();
