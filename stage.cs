@@ -16,7 +16,7 @@ public class stage : MonoBehaviour
 
 
     public void FillList() {
-        kol = ran.Next(6, 13);
+        kol = ran.Next(6, 10);
         for (int i = 0; i < kol; i++)
         {
             GameObject obj = blockCreate.CreateObj();
@@ -34,8 +34,8 @@ public class stage : MonoBehaviour
             Place(list.GetRange(start, kol));
         }
         else {
-            start = ran.Next(15, list.Count);
-            kol = ran.Next(7, 15);
+            start = ran.Next(13, list.Count);
+            kol = ran.Next(6, 13);
             Place(list.GetRange(start-kol, kol));
         }
     }
@@ -46,7 +46,7 @@ public class stage : MonoBehaviour
     {
         Vector2 curPozition = levelRules.Position();
         int cameraHight = Convert.ToInt32(cam.orthographicSize);
-        float stepY = (2f * cameraHight) / objList.Count;
+        float stepY = (2f * cameraHight) / kol;
         
         bool sideRight = true;
 
@@ -56,12 +56,9 @@ public class stage : MonoBehaviour
             curPozition.x = sideRight ? 
                 ran.Next(1, cameraHight) * cam.aspect :
                 ran.Next(-cameraHight+1, 0)* cam.aspect;
-            if (sideRight) { obj.transform.Rotate(0, 180, 0); }
             curPozition.y += stepY;
             sideRight = !sideRight;
         }
-
-        curPozition.x += sideRight? 3 : -3;
         lastPoz = curPozition;
     }
 }
