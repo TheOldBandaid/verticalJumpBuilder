@@ -15,10 +15,12 @@ public class block : MonoBehaviour
     private PolygonCollider2D borderForm;
     public System.Random ran = new System.Random();
 
+    public float hight, width;
+
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
         form = obj.AddComponent<PolygonCollider2D>();
-        float hight = ran.Next(1, 4) * 0.25f;
-        float width = ran.Next(1, 4) * 0.25f;
+        hight = ran.Next(1, 4) * 0.25f;
+        width = ran.Next(1, 4) * 0.25f;
         Vector2[] points = new Vector2[a ? 4 : 3];
 
         points[0] = new Vector2(width, -hight);
@@ -76,10 +78,13 @@ public class block : MonoBehaviour
     {
         Vector3[] vertices = mesh.vertices;
         Vector2[] uvs = new Vector2[vertices.Length];
+        int changePivotX = Convert.ToInt32(hight * 4);
+        int changePivotY = Convert.ToInt32(width * 4);
+        Vector2 changePivot = new Vector2(ran.Next(0, changePivotX) * 0.25f, ran.Next(0, changePivotY) * 0.25f);
 
         for (int i = 0; i < vertices.Length; i++)
         {
-            uvs[i] = new Vector2(vertices[i].x, vertices[i].y);
+            uvs[i] = new Vector2(vertices[i].x, vertices[i].y) - changePivot;
         }
 
         mesh.uv = uvs;
