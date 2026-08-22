@@ -1,14 +1,9 @@
 # Vertcal Jump game level Generator 
-Generating an infinite vertical level by gradually increasing the complexity of the created elements, taking into account entry and exit points
-
-в планах: сделать русский и английский readme. может написать в одном файле и сделать навигацию по нему или же два разных.
-
-реализация визуала:
-1. вырезка меша по границам, обнуление границ
-2. изначальный спрайт с двумя бортами, растягиваемый мэш, переворот спрайта
-3. бортики и внутренность отрисовывается двумя разными спрайтами
 
 - [ ] Russian Readme.md
+
+Generating an infinite vertical level by gradually increasing the complexity of the created elements, taking into account entry and exit points
+
 
 ## Block
 The smallest unit of level generation, at this stage the shape, visuals and properties of the block are defined
