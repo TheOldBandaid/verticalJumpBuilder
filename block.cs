@@ -1,12 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using System;
 using UnityEngine;
-using Unity.VisualScripting;
-using UnityEngine.U2D;
-using UnityEditor;
-using UnityEngine.UI;
 
 public class block : MonoBehaviour
 {
@@ -78,6 +71,7 @@ public class block : MonoBehaviour
     {
         Vector3[] vertices = mesh.vertices;
         Vector2[] uvs = new Vector2[vertices.Length];
+
         int changePivotX = Convert.ToInt32(hight * 4);
         int changePivotY = Convert.ToInt32(width * 4);
         Vector2 changePivot = new Vector2(ran.Next(0, changePivotX) * 0.25f, ran.Next(0, changePivotY) * 0.25f);

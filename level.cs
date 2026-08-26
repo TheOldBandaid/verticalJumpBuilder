@@ -1,17 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class level : MonoBehaviour
 {
     public stage stageInfo;
+
+    public float start, end;
     private Vector2 position;
 
-    void Start() {
-        stageInfo.MakeStage();
-        stageInfo.MakeStage();
-    }
+
 
     public Vector2 Position()
     {
@@ -19,12 +20,27 @@ public class level : MonoBehaviour
         return position;
     }
 
-    //public void StagesOfCreation() { 
-    //}
+    void Start() {
+        stageInfo.MakeStage();
+        FixPozition();
+        stageInfo.MakeStage();
+        UpdateStage();
+        FixPozition();
+    }
 
-    //public void CamClean() {
-    //    float camBottomLine = stageInfo.cam.ViewportToWorldPoint(Vector3.zero).y;
-    //    if (camBottomLine > position.y)
-    //    {}
-    //}
+    public void FixPozition()
+    {
+        start = position.y;
+        end = start + stageInfo.cam.orthographicSize;
+    }
+
+    public void UpdateStage()
+    {
+        float cameraBottomY = stageInfo.cam.transform.position.y - stageInfo.cam.orthographicSize - 2f;
+        if (cameraBottomY > end)
+        {
+
+        }
+    }
+
 }

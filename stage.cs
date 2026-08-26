@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class stage : MonoBehaviour
@@ -14,9 +12,8 @@ public class stage : MonoBehaviour
     private System.Random ran = new System.Random();
     public List<GameObject> list = new List<GameObject>();
 
-
     public void FillList() {
-        kol = ran.Next(6, 10);
+        kol = ran.Next(4, 13);
         for (int i = 0; i < kol; i++)
         {
             GameObject obj = blockCreate.CreateObj();
@@ -26,18 +23,9 @@ public class stage : MonoBehaviour
     
     public void MakeStage()
     {
-        int maxAmount = 40;
         int start = list.Count;
-        if (list.Count < maxAmount)
-        {
-            FillList();
-            Place(list.GetRange(start, kol));
-        }
-        else {
-            start = ran.Next(13, list.Count);
-            kol = ran.Next(6, 13);
-            Place(list.GetRange(start-kol, kol));
-        }
+        FillList();
+        Place(list.GetRange(start, kol));
     }
 
 
@@ -46,7 +34,7 @@ public class stage : MonoBehaviour
     {
         Vector2 curPozition = levelRules.Position();
         int cameraHight = Convert.ToInt32(cam.orthographicSize);
-        float stepY = (2f * cameraHight) / kol;
+        float stepY = (2f * cameraHight) / list.Count;
         
         bool sideRight = true;
 
