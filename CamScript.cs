@@ -1,18 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CamScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    Sprite sky, skyObjects, background;
+    GameObject player;
+
+    public int playerPosition(GameObject player) {
+        int y = Convert.ToInt32(player.transform.position.y);
+        return y;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
     }
 }
