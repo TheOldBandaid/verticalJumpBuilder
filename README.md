@@ -1,25 +1,89 @@
-# Vertcal Jump game level Generator 
+# Генератор уровня (Vertical Jump)
 
-- [ ] Russian Readme.md
+Небольшой проект на Unity с генерацией вертикального уровня.
 
-Generating an infinite vertical level by gradually increasing the complexity of the created elements, taking into account entry and exit points
+Идея: сделать уровень, который постепенно продолжается вверх и каждый раз собирается из случайно созданных блоков. Блоки отличаются формой, размером и расположением.
+
+### Как всё устроено:
+
+* `block.cs` – создание отдельного блока;
+* `stage.cs` – создание и размещение блоков;
+* `level.cs` – управление уровнем и подготовка к его обновлению.
+
 
 
 ## Block
-The smallest unit of level generation, at this stage the shape, visuals and properties of the block are defined
+`block` – самая маленькая часть уровня.
 
-### Visual 
-The development of the visual of the block begins with separating the image of the sides from the internal component in the sprite
-In the «Sprite editor» separate the borders by length and in «Draw Mode» select Tiled. 
+При создании блока сначала случайно выбирается его форма:
 
-> I found this part a little more difficult to understand than I would have liked, so I'll write down the solution I came up with right away. This is convenient because the size of the borders does not change when the block size is changed, and the triangles are immediately created without borders
+* прямоугольник,
+* треугольник.
 
-Using mesh technology made it possible to cut the sprite to fit the collider's dimensions.
+Для этого создаётся `PolygonCollider2D`, которому задаются случайные ширина и высота. Размеры выбираются случайно в небольшом диапазоне, поэтому каждый новый блок может немного отличаться от предыдущего.
 
-### Form
-There are two types here - triangles and rectangles. Both work according to the Polygon Collider 2D principle, but the triangle's random point is reset to zero.
+Границы блока создаются отдельным `PolygonCollider2D`. Они немного больше основной формы и работают как `Trigger`.
 
-### Properties
-There are two types: sticky and repulsive. Sticky properties are indicated by the sprite's boundaries. Repulsive are not.
+Таким образом, у одного блока есть внутренняя часть и отдельная область по краям.
 
-## Stage 
+### Создание внешнего вида
+
+Для блока создаются:
+
+* `MeshFilter`;
+* `MeshRenderer`;
+* два меша – для внутренней части и границ.
+
+Меши создаются прямо на основе `PolygonCollider2D`. После этого они объединяются в один меш.
+
+Для внутренней части и границ используются разные материалы.
+
+Это позволяет визуально разделить сам блок и его границы.
+
+Также для мешей генерируются UV-координаты. Точка, от которой строятся UV, немного меняется случайным образом, поэтому текстура на разных блоках не выглядит полностью одинаково.
+
+## Stage
+
+`stage` отвечает уже не за один блок, а за целый участок уровня.
+
+Для начала случайно выбирается количество блоков. Получается от 4 до 12 блоков за один вызов генерации.
+
+После этого каждый блок создаётся через `blockCreate.CreateObj()` и добавляется в список.
+
+### Размещение блоков
+
+Метод `Place()` расставляет созданные блоки по вертикали.
+
+Первый блок получает текущую позицию уровня, после чего следующий блок ставится выше.
+
+Блоки при этом чередуются между левой и правой стороной:
+
+```text
+      ■
+      
+  ■
+      
+      ■
+      
+  ■
+      
+      ■
+```
+
+Позиция по горизонтали выбирается случайно в пределах камеры.
+
+Высота между блоками рассчитывается исходя из размера камеры и количества уже созданных элементов.
+
+Кроме позиции, каждому блоку случайно задаётся поворот. Поэтому блок может повернуться на 90, 180 или 270 градусов.
+
+Последняя рассчитанная позиция сохраняется в `lastPoz`. Она нужна для того, чтобы следующий создаваемый участок продолжался от предыдущего.
+
+
+## Level
+
+`level` отвечает за общую работу с уровнем.
+
+Он хранит начало и конец текущего участка.
+При запуске `level` сначала создаёт первый участок, запоминает его положение, а затем создаёт ещё один участок выше.
+
+Также здесь есть заготовка `UpdateStage()`. Сейчас в ней проверяется положение нижней границы камеры относительно конца текущего участка. В дальнейшем именно здесь можно добавить создание новых блоков и удаление уже ненужных.
