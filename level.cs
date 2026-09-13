@@ -28,6 +28,11 @@ public class level : MonoBehaviour
         FixPozition();
     }
 
+    private void Update()
+    {
+        UpdateStage();
+    }
+
     public void FixPozition()
     {
         start = position.y;
@@ -36,10 +41,13 @@ public class level : MonoBehaviour
 
     public void UpdateStage()
     {
-        float cameraBottomY = stageInfo.cam.transform.position.y - stageInfo.cam.orthographicSize - 2f;
-        if (cameraBottomY > end)
-        {
+        float cameraTop = stageInfo.cam.transform.position.y
+            + stageInfo.cam.orthographicSize;
 
+        if (cameraTop > end - 3f)
+        {
+            stageInfo.MakeStage();
+            FixPozition();
         }
     }
 
