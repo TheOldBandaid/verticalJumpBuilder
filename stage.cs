@@ -13,7 +13,7 @@ public class stage : MonoBehaviour
     public List<GameObject> list = new List<GameObject>();
 
     public void FillList() {
-        kol = ran.Next(4, 13);
+        kol = ran.Next(4, 10);
         for (int i = 0; i < kol; i++)
         {
             GameObject obj = blockCreate.CreateObj();
@@ -34,7 +34,7 @@ public class stage : MonoBehaviour
     {
         Vector2 curPozition = levelRules.Position();
         int cameraHight = Convert.ToInt32(cam.orthographicSize);
-        float stepY = (2f * cameraHight) / list.Count;
+        float stepY = (2f * cameraHight) / objList.Count;
         
         bool sideRight = true;
 
