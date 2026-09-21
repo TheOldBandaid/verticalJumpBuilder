@@ -9,8 +9,9 @@ public class level : MonoBehaviour
 {
     public stage stageInfo;
 
-    public float start, end;
+    public int activeStage = 3;
     private Vector2 position;
+    Queue<List<GameObject>> queueStage = new Queue<List<GameObject>>();
 
 
 
@@ -21,35 +22,37 @@ public class level : MonoBehaviour
     }
 
     void Start() {
-        stageInfo.MakeStage();
-        UpdateStage();
-        FixPozition();
-    }
-
-    private void Update()
-    {
-        if ((stageInfo.cam.transform.position.y + stageInfo.cam.orthographicSize) % 2f < 0.1)
-        {
-            UpdateStage();
+        for (int i = 0; i < activeStage; i++) {
+            List<GameObject> list = stageInfo.CreateStage();
+            stageInfo.Place(list);
+            queueStage.Enqueue(list);
         }
     }
 
-    public void FixPozition()
-    {
-        start = position.y;
-        end = start + stageInfo.cam.orthographicSize;
-    }
+    //private void Update()
+    //{
+    //    if ((stageInfo.cam.transform.position.y + stageInfo.cam.orthographicSize) % 2f < 0.1)
+    //    {
+    //        UpdateStage();
+    //    }
+    //}
 
-    public void UpdateStage()
-    {
-        float cameraTop = stageInfo.cam.transform.position.y
-            + stageInfo.cam.orthographicSize;
+    //public void FixPozition()
+    //{
+    //    start = position.y;
+    //    end = start + stageInfo.cam.orthographicSize;
+    //}
 
-        if (cameraTop > end)
-        {
-            stageInfo.MakeStage();
-            FixPozition();
-        }
-    }
+    //public void UpdateStage()
+    //{
+    //    float cameraTop = stageInfo.cam.transform.position.y
+    //        + stageInfo.cam.orthographicSize;
+
+    //    if (cameraTop > end)
+    //    {
+    //        stageInfo.MakeStage();
+    //        FixPozition();
+    //    }
+    //}
 
 }

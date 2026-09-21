@@ -7,6 +7,7 @@ public class block : MonoBehaviour
     private PolygonCollider2D form;
     private PolygonCollider2D borderForm;
     public System.Random ran = new System.Random();
+    
 
     public float hight, width;
 

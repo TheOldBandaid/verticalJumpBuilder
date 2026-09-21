@@ -10,24 +10,17 @@ public class stage : MonoBehaviour
     public level levelRules;
     private int kol = 1;
     private System.Random ran = new System.Random();
-    public List<GameObject> list = new List<GameObject>();
 
-    public void FillList() {
+    public List<GameObject> CreateStage() {
         kol = ran.Next(4, 10);
+        List<GameObject> stage = new List<GameObject>();
         for (int i = 0; i < kol; i++)
         {
             GameObject obj = blockCreate.CreateObj();
-            list.Add(obj);
+            stage.Add(obj);
         }
+        return stage;
     }
-    
-    public void MakeStage()
-    {
-        int start = list.Count;
-        FillList();
-        Place(list.GetRange(start, kol));
-    }
-
 
 
     public void Place(List<GameObject> objList)
