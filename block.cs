@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class block : MonoBehaviour
@@ -8,7 +9,6 @@ public class block : MonoBehaviour
     private PolygonCollider2D borderForm;
     public System.Random ran = new System.Random();
     
-
     public float hight, width;
 
     public PolygonCollider2D InnerForm(GameObject obj, bool a) {
@@ -101,6 +101,7 @@ public class block : MonoBehaviour
     public GameObject CreateObj()
     {
         GameObject obj = new GameObject("block");
+        obj.tag = "block";
         Inner(obj);
         Borders(obj);
         Visual(obj);
