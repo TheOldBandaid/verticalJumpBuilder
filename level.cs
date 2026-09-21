@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,6 +12,8 @@ public class level : MonoBehaviour
 
     public int activeStage = 3;
     private Vector2 position;
+
+    private float triggerY;
     Queue<List<GameObject>> queueStage = new Queue<List<GameObject>>();
 
 
@@ -27,32 +30,32 @@ public class level : MonoBehaviour
             stageInfo.Place(list);
             queueStage.Enqueue(list);
         }
+        FixPosition();
     }
 
-    //private void Update()
-    //{
-    //    if ((stageInfo.cam.transform.position.y + stageInfo.cam.orthographicSize) % 2f < 0.1)
-    //    {
-    //        UpdateStage();
-    //    }
-    //}
+    private void Update()
+    {
+        float cameraTop = stageInfo.cam.transform.position.y
+            + stageInfo.cam.orthographicSize;
 
-    //public void FixPozition()
-    //{
-    //    start = position.y;
-    //    end = start + stageInfo.cam.orthographicSize;
-    //}
+        if (cameraTop > triggerY)
+        {
+            UpdateStage();
+            FixPosition();
+        }
+    }
 
-    //public void UpdateStage()
-    //{
-    //    float cameraTop = stageInfo.cam.transform.position.y
-    //        + stageInfo.cam.orthographicSize;
+    public void FixPosition()
+    {
+        triggerY = position.y - stageInfo.cam.orthographicSize + 3f;
+    }
 
-    //    if (cameraTop > end)
-    //    {
-    //        stageInfo.MakeStage();
-    //        FixPozition();
-    //    }
-    //}
+    public void UpdateStage()
+    {
+        if (queueStage.Count == 0) return;
+        List<GameObject> oldStage = queueStage.Dequeue();
+        stageInfo.Place(oldStage);
+        queueStage.Enqueue(oldStage);
+    }
 
 }
