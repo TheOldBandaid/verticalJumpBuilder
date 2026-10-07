@@ -22,8 +22,6 @@ public class PlayerScript : MonoBehaviour
     private Vector3 bodyPosition;
 
 
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,6 +31,7 @@ public class PlayerScript : MonoBehaviour
         if (bodyTransform != null)
         {
             bodyScale = bodyTransform.localScale;
+            bodyPosition = bodyTransform.localPosition;
         }
 
         StopPlayer();
